@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import Hero from '../components/Hero'
 import styles from '../styles/Layout.module.css'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-HomePage.getInitialProps = async (ctx) => {
+export async function getStaticProps({ locale }) {
   const options = {headers: new Headers({'Content-Type': 'application/json'})}
   const resEN = await fetch('https://cms.ohbiohealth.club/documents', {
     method: 'GET', ...options
@@ -13,38 +14,41 @@ HomePage.getInitialProps = async (ctx) => {
   const dataEN = await resEN.json()
   const dataZH = await resZH.json()
 
-  return { 
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common', 'footer'])),
       data: {
-          about: {
-            en: dataEN.filter(item=> item.type==='aboutus')[0].text,
-            zh: dataZH.filter(item=> item.type==='aboutus')[0].text
-          },
-          technology: {
-            en: dataEN.filter(item=> item.type==='technology')[0].text,
-            zh: dataZH.filter(item=> item.type==='technology')[0].text
-          },
-          BM: {
-            en: dataEN.filter(item=> item.type==='BMfunctions')[0].text,
-            zh: dataZH.filter(item=> item.type==='BMfunctions')[0].text
-          },
-          QM: {
-            en: dataEN.filter(item=> item.type==='QMfunctions')[0].text,
-            zh: dataZH.filter(item=> item.type==='QMfunctions')[0].text
-          },
-          BES: {
-            en: dataEN.filter(item=> item.type==='BESfunctions')[0].text,
-            zh: dataZH.filter(item=> item.type==='BESfunctions')[0].text
-          },
-          SEG: {
-            en: dataEN.filter(item=> item.type==='SEGfunctions')[0].text,
-            zh: dataZH.filter(item=> item.type==='SEGfunctions')[0].text
-          },
-          contact: {
-            en: dataEN.filter(item=> item.type==='contact')[0].text,
-            zh: dataZH.filter(item=> item.type==='contact')[0].text
-          }
+        about: {
+          en: dataEN.filter(item=> item.type==='aboutus')[0].text,
+          zh: dataZH.filter(item=> item.type==='aboutus')[0].text
+        },
+        technology: {
+          en: dataEN.filter(item=> item.type==='technology')[0].text,
+          zh: dataZH.filter(item=> item.type==='technology')[0].text
+        },
+        BM: {
+          en: dataEN.filter(item=> item.type==='BMfunctions')[0].text,
+          zh: dataZH.filter(item=> item.type==='BMfunctions')[0].text
+        },
+        QM: {
+          en: dataEN.filter(item=> item.type==='QMfunctions')[0].text,
+          zh: dataZH.filter(item=> item.type==='QMfunctions')[0].text
+        },
+        BES: {
+          en: dataEN.filter(item=> item.type==='BESfunctions')[0].text,
+          zh: dataZH.filter(item=> item.type==='BESfunctions')[0].text
+        },
+        SEG: {
+          en: dataEN.filter(item=> item.type==='SEGfunctions')[0].text,
+          zh: dataZH.filter(item=> item.type==='SEGfunctions')[0].text
+        },
+        contact: {
+          en: dataEN.filter(item=> item.type==='contact')[0].text,
+          zh: dataZH.filter(item=> item.type==='contact')[0].text
+        }
       }
-  }
+    },
+  };
 }
 
 export default function HomePage({ currentUser, data }) {

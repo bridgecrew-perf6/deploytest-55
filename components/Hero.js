@@ -1,8 +1,9 @@
 import styles from '../styles/Hero.module.css'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next';
 
-export default function Hero() {
-  const { t, i18n } = useTranslation()
+const Hero = () => {
+  const { t } = useTranslation('common');
+
   return (
     <div className={styles.hero}>
       <h1>{t('welcome')}</h1>
@@ -10,3 +11,5 @@ export default function Hero() {
     </div>
   )
 }
+
+export default Hero
