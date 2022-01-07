@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import buildClient from '../api/build-client'
+import { appWithTranslation } from '../utils/i18n'
 
 const AppComponent = ({ Component, pageProps, currentUser, footerData }) => {
   return (
@@ -21,4 +22,4 @@ AppComponent.getInitialProps = async (appContext) => {
   }
 }
 
-export default AppComponent
+export default appWithTranslation(AppComponent)
