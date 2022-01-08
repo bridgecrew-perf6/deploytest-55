@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import buildClient from '../api/build-client'
-import { appWithTranslation } from 'next-i18next'
+import { appWithTranslation } from '../utils/i18n'
 
 const AppComponent = ({ Component, pageProps, currentUser, footerData }) => {
   return (
@@ -18,7 +18,7 @@ AppComponent.getInitialProps = async (appContext) => {
 
   return {
     pageProps,
-    ...data
+    ...data,
   }
 }
 

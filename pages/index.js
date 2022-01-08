@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import Hero from '../components/Hero'
 import styles from '../styles/Layout.module.css'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'react-i18next'
 
-export async function getStaticProps({ locale }) {
+HomePage.getInitialProps = async (ctx) => {
   const options = {headers: new Headers({'Content-Type': 'application/json'})}
   const resEN = await fetch('https://cms.ohbiohealth.club/documents', {
     method: 'GET', ...options
@@ -15,8 +15,6 @@ export async function getStaticProps({ locale }) {
   const dataZH = await resZH.json()
 
   return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common', 'footer'])),
       data: {
         about: {
           en: dataEN.filter(item=> item.type==='aboutus')[0].text,
@@ -47,28 +45,28 @@ export async function getStaticProps({ locale }) {
           zh: dataZH.filter(item=> item.type==='contact')[0].text
         }
       }
-    },
-  };
+    }
 }
 
 export default function HomePage({ currentUser, data }) {
-  const [aboutContent, setAboutContent] = useState(data.about.en)
-  const [technologyContent, setTechnologyContent] = useState(data.technology.en)
-  const [BMContent, setBMContent] = useState(data.BM.en)
-  const [QMContent, setQMContent] = useState(data.QM.en)
-  const [BESContent, setBESContent] = useState(data.BES.en)
-  const [SEGContent, setSEGContent] = useState(data.SEG.en)
-  const [contactContent, setContactContent] = useState(data.contact.en)
+  const { t, i18n } = useTranslation()
+  const [aboutContent, setAboutContent] = useState(data.about[i18n.language])
+  const [technologyContent, setTechnologyContent] = useState(data.technology[i18n.language])
+  const [BMContent, setBMContent] = useState(data.BM[i18n.language])
+  const [QMContent, setQMContent] = useState(data.QM[i18n.language])
+  const [BESContent, setBESContent] = useState(data.BES[i18n.language])
+  const [SEGContent, setSEGContent] = useState(data.SEG[i18n.language])
+  const [contactContent, setContactContent] = useState(data.contact[i18n.language])
 
   useEffect(() => {
-    setAboutContent(data.about.en)
-    setTechnologyContent(data.technology.en)
-    setBMContent(data.BM.en)
-    setQMContent(data.QM.en)
-    setBESContent(data.BES.en)
-    setSEGContent(data.SEG.en)
-    setContactContent(data.contact.en)
-  },[])
+    setAboutContent(data.about[i18n.language])
+    setTechnologyContent(data.technology[i18n.language])
+    setBMContent(data.BM[i18n.language])
+    setQMContent(data.QM[i18n.language])
+    setBESContent(data.BES[i18n.language])
+    setSEGContent(data.SEG[i18n.language])
+    setContactContent(data.contact[i18n.language])
+  },[i18n.language])
 
   return (
     <div>
